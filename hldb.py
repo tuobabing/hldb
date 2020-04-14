@@ -71,25 +71,17 @@ class hldb:
         '''
         if (args == ''):
             return load_sql(path=path, needCheck=needCheck)
-        length = -1
+        if (type(args) != list):
+            print('args参数必须是列表')
+            return ''
+        
         sqls = []
-        argsList = []
-        for key in args:
-            value = args[key]
-            if (type(value) != list):
-                print('传入参数必须是列表')
+        for argsvalue in args:
+            if (type(argsvalue) != dict):
+                print('args参数内的值类型必须是字典')
                 return ''
-            if (length == -1):
-                for i in range(len(value)):
-                    argsList.append({})
-                length = len(value)
-            elif (len(value) != length):
-                print('传入参数异常')
-                return ''
-            for i in range(len(argsList)):
-                argsList[i][key] = args[key][i]
-        for args in argsList:
-            sql = self.load_sql(path=path, args=args, needCheck=False)
+        for argsvalue in args:
+            sql = self.load_sql(path=path, args=argsvalue, needCheck=False)
             sqls.append(sql)
         if (needCheck):
             for sql in sqls:
